@@ -6,9 +6,13 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Backend.Models;
+using Backend.Models.Database;
+using Backend.Models.View;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query.ExpressionTranslators.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -17,58 +21,86 @@ namespace Backend.Controllers
     [Route("api/account")]
     public class AccountController : Controller
     {
-        private readonly SignInManager<User> _singInManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
 
-        public AccountController(SingInManager<User> singInManager, UserManager<User> userManager, IConfiguration configuration)
+        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager, IConfiguration configuration)
         {
-            _singInManager = singInManager;
+            _signInManager = signInManager;
             _userManager = userManager;
             _configuration = configuration;
         }
+        /*
 
         [HttpPost]
-        public async Task<object> Login([FromBody] LoginDto model)
+        [Route("login")]
+        public async Task<ActionResult> Login([FromBody] Login model)
         {
-            var result = await _singInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
 
             if (result.Succeeded)
             {
-                var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
-                return await GenerateJwtToken(model.Email, appUser);
+                var appUser = _userManager.Users.SingleOrDefault(r => r.UserName == model.UserName);
+
+                HttpResponse httpResponse = new DefaultHttpResponse(new DefaultHttpContext());
+                httpResponse.Headers.Add("Authorization", GenerateJwtToken(model.UserName, appUser));
+
+                return Ok(httpResponse);
+                //await GenerateJwtToken(model.Email, appUser);
             }
 
-            throw new ApplicationException("INVALID_LOGIN_ATTEMPT");
+            return BadRequest();
+
         }
 
         [HttpPost]
-        public async Task<object> Register([FromBody] RegisterDto model)
+        [Route("register")]
+        public async Task<ActionResult> Register([FromBody] Registration model)
         {
+            if (_userManager.FindByNameAsync(model.UserName).Result != null || model.Password != model.ConfirmPassword)
+            {
+                return BadRequest();
+            }
+
             var user = new User()
             {
                 UserName = model.UserName,
-                Email = model.Email
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                PhoneNumber = model.Phone,
+                PhoneNumberConfirmed = true,
+                City = model.City,
+                State = model.State,
+                Address = model.Address,
+                HouseNumber = model.HouseNumber,
+                Email = model.Email,
+                EmailConfirmed = true
+                //Role = 
+                //TODO Вставить роль
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
-                await _singInManager.SignInAsync(user, false);
-                return await GenerateJwtToken(model.Email, user);
+                user = _userManager.Users.SingleOrDefault(r => r.UserName == model.UserName);
+                await _signInManager.SignInAsync(user, false);
+                return GenerateJwtToken(model.Email, user);
             }
 
             throw new ApplicationException("UNKNOWN_ERROR");
         }
 
-        private async Task<object> GenerateJwtToken(string email, User user)
+        private string GenerateJwtToken(string userName, User user)
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, email),
+                new Claim(JwtRegisteredClaimNames.Sub, userName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id)
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.UserName),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));
@@ -76,34 +108,15 @@ namespace Backend.Controllers
             var expires = DateTime.Now.AddDays(Convert.ToDouble(_configuration["JwtExpireDays"]));
 
             var token = new JwtSecurityToken(
-                _configuration["JwtIssuer"],
-                _configuration["JwtIssuer"],
-                claims,
+                issuer: _configuration["JwtIssuer"],
+                audience: _configuration["JwtIssuer"],
+                claims: claims,
                 expires: expires,
                 signingCredentials: credentials
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
-        //TODO вынести в другой файл и заменить на свои
-        public class LoginDto
-        {
-            [Required]
-            public string Email { get; set; }
-
-            [Required]
-            public string Password { get; set; }
-        }
-
-        public class RegisterDto
-        {
-            [Required]
-            public string Email { get; set; }
-
-            [Required]
-            [StringLength(100, ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
-            public string Password { get; set; }
-        }
+        */
     }
 }
