@@ -135,7 +135,11 @@ namespace Backend.Context
             builder.HasOne(w => w.Product)
                 .WithOne(w => w.ProductInformation);
 
-            //builder.Property()
+            builder.Property(w => w.Memory).IsRequired();
+            builder.Property(w => w.NumberOfCores).IsRequired();
+            builder.Property(w => w.OperatingSystem).IsRequired().HasMaxLength(200);
+            builder.Property(w => w.Ram).IsRequired();
+            builder.Property(p => p.ScreenSize).IsRequired().HasMaxLength(10);
         }
     }
 
