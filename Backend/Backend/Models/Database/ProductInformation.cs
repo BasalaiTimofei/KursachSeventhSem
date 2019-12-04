@@ -5,7 +5,7 @@
         public string Id { get; set; }
 
         public string OperatingSystem { get; set; }
-        public float ScreenSize { get; set; }
+        public string ScreenSize { get; set; }
         public int Ram { get; set; }
         public int Memory { get; set; }
         /// <summary>

@@ -11,17 +11,14 @@ namespace Backend.Services
     public class UserService
     {
         private readonly ApplicationContext _applicationContext;
-        private readonly BasketService _basketService;
 
         public UserService(ApplicationContext applicationContext)
         {
             _applicationContext = applicationContext;
-            _basketService = new BasketService(_applicationContext);
         }
 
         public async Task<string[]> Create(Registration model, string role)
         {
-            var userDb = _applicationContext.Users.Where(w => w.UserName == model.UserName);
             if (_applicationContext.Users.Any(w => w.UserName == model.UserName))
             {
                 //Вернуть ошибку о том что Уже есть Юзер с таким UserName
@@ -49,18 +46,23 @@ namespace Backend.Services
                 HouseNumber = model.HouseNumber,
 
                 DateTimeCreate = DateTime.Now,
-                Role = await _applicationContext.Roles.FirstAsync(w => w.Name == role)
+                Role = await _applicationContext.Roles.FirstOrDefaultAsync(w => w.Name == role)
             };
-
             await _applicationContext.Users.AddAsync(user);
-            await _applicationContext.SaveChangesAsync();
 
-            await _basketService.Create(user.Id);
+            var basket = new Basket
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserId = user.Id
+            };
+            await _applicationContext.Baskets.AddAsync(basket);
+
+            await _applicationContext.SaveChangesAsync();
 
             return new[] {user.Id, role};
         }
 
-        public string[] Login(Login model)
+        public async Task<string[]> Login(Login model)
         {
             if (_applicationContext.Users.Any(w => w.UserName == model.UserName && w.Password == model.Password))
             {
@@ -68,15 +70,33 @@ namespace Backend.Services
                 throw new Exception();
             }
 
-            var user = _applicationContext.Users.FirstOrDefault(w =>
+            var user = await _applicationContext.Users.FirstOrDefaultAsync(w =>
                 w.UserName == model.UserName && w.Password == model.Password);
 
-            if (user != null) return new[] {user.Id, user.Role.Name};
+            return new[] {user.Id, user.Role.Name};
         }
 
-        //public void Delete(DeleteUser model)
-        //{
+        public async Task Delete(DeleteUser model)
+        {
+            if (_applicationContext.Users.Any(w => w.UserName == model.UserName && w.Password == model.Password))
+            {
+                //Вернуть ошибку о том что данные неверны
+                throw new Exception();
+            }
 
-        //}
+            var user = await _applicationContext.Users.FirstOrDefaultAsync(w =>
+                w.UserName == model.UserName && w.Password == model.Password);
+
+            _applicationContext.BasketProducts.RemoveRange(
+                _applicationContext.BasketProducts.Where(w => w.Basket.UserId == user.Id));
+            _applicationContext.Baskets.Remove(user.Basket);
+            _applicationContext.Assessments.RemoveRange(user.Assessment);
+            _applicationContext.OrderProducts.RemoveRange(
+                _applicationContext.OrderProducts.Where(w => w.Order.UserId == user.Id));
+            _applicationContext.Orders.RemoveRange(user.Orders);
+            _applicationContext.Comments.RemoveRange(user.Comments);
+
+            await _applicationContext.SaveChangesAsync();
+        }
     }
 }
