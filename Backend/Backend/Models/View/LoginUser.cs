@@ -1,7 +1,7 @@
 ﻿
 namespace Backend.Models.View
 {
-    public class Login
+    public class LoginUserViewModel
     {
         public string UserName { get; set; }
         public string Password { get; set; }

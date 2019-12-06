@@ -1,11 +1,11 @@
 ﻿namespace Backend.Models.Database
 {
-    public class OrderProduct
+    public class OrderProductDatabaseModel
     {
         public string OrderId { get; set; }
-        public Order Order { get; set; }
+        public OrderDatabaseModel Order { get; set; }
 
         public string ProductId { get; set; }
-        public Product Product { get; set; }
+        public ProductDatabaseModel Product { get; set; }
     }
 }

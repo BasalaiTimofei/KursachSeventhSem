@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Backend.Context;
 using Backend.Models.Database;
@@ -16,7 +18,7 @@ namespace Backend.Services
 
         public async Task Create(string userId, string productId, byte value)
         {
-            await _applicationContext.Assessments.AddAsync(new Assessment
+            await _applicationContext.Assessments.AddAsync(new AssessmentDatabaseModel
             {
                 Id = Guid.NewGuid().ToString(),
                 UserId = userId,
@@ -33,6 +35,12 @@ namespace Backend.Services
                 .Result.Value = value;
 
             await _applicationContext.SaveChangesAsync();
+        }
+
+        public async Task<string> AverageValue(string productId)
+        {
+            var value = await _applicationContext.Assessments.Where(w => w.ProductId == productId).AverageAsync(s => s.Value);
+            return Math.Round(value, 1).ToString(CultureInfo.InvariantCulture);
         }
     }
 }

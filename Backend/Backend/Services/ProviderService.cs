@@ -18,7 +18,7 @@ namespace Backend.Services
 
         public async Task Create(string providerName)
         {
-            var provider = new Provider
+            var provider = new ProviderDatabaseModel
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = providerName

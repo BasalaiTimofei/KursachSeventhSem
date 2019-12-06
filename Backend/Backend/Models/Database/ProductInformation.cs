@@ -1,6 +1,6 @@
 ﻿namespace Backend.Models.Database
 {
-    public class ProductInformation
+    public class ProductInformationDatabaseModel
     {
         public string Id { get; set; }
 
@@ -14,6 +14,6 @@
         public int NumberOfCores { get; set; }
 
         public string ProductId { get; set; }
-        public Product Product { get; set; }
+        public ProductDatabaseModel Product { get; set; }
     }
 }

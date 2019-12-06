@@ -5,17 +5,17 @@ namespace Backend.Context
 {
     public sealed class ApplicationContext : DbContext
     {
-        public DbSet<Assessment> Assessments { get; set; }
-        public DbSet<Basket> Baskets { get; set; }
-        public DbSet<BasketProduct> BasketProducts { get; set; }
-        public DbSet<Comment> Comments { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderProduct> OrderProducts { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<ProductInformation> ProductInformations { get; set; }
-        public DbSet<Provider> Providers { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<AssessmentDatabaseModel> Assessments { get; set; }
+        public DbSet<BasketDatabaseModel> Baskets { get; set; }
+        public DbSet<BasketProductDatabaseModel> BasketProducts { get; set; }
+        public DbSet<CommentDatabaseModel> Comments { get; set; }
+        public DbSet<OrderDatabaseModel> Orders { get; set; }
+        public DbSet<OrderProductDatabaseModel> OrderProducts { get; set; }
+        public DbSet<ProductDatabaseModel> Products { get; set; }
+        public DbSet<ProductInformationDatabaseModel> ProductInformations { get; set; }
+        public DbSet<ProviderDatabaseModel> Providers { get; set; }
+        public DbSet<RoleDatabaseModel> Roles { get; set; }
+        public DbSet<UserDatabaseModel> Users { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> operations) 
             : base(operations)

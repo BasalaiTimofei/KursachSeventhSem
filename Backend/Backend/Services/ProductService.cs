@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Backend.Context;
 using Backend.Models.Database;
 using Backend.Models.View;
-using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Services
 {
@@ -18,9 +17,9 @@ namespace Backend.Services
             _applicationContext = applicationContext;
         }
 
-        public async Task<string> Create(ProductCreate model)
+        public async Task<string> Create(ProductCreateViewModel model)
         {
-            var product = new Product
+            var product = new ProductDatabaseModel
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = model.Name,
@@ -32,7 +31,7 @@ namespace Backend.Services
             };
             await _applicationContext.Products.AddAsync(product);
 
-            var productInformation = new ProductInformation
+            var productInformation = new ProductInformationDatabaseModel
             {
                 Id = Guid.NewGuid().ToString(),
                 ProductId = product.Id,
@@ -60,7 +59,7 @@ namespace Backend.Services
             await _applicationContext.SaveChangesAsync();
         }
 
-        public void DeleteRange(IEnumerable<Product> products)
+        public void DeleteRange(IEnumerable<ProductDatabaseModel> products)
         {
             foreach (var product in products)
             {
@@ -72,29 +71,6 @@ namespace Backend.Services
                 _applicationContext.Comments.RemoveRange(_applicationContext.Products.FindAsync(product.Id).Result.Comments);
                 _applicationContext.Products.Remove(_applicationContext.Products.FindAsync(product.Id).Result);
             }
-        }
-
-        public async Task AddInBasket(string userId, string productId)
-        {
-            await _applicationContext.BasketProducts.AddAsync(new BasketProduct
-            {
-                BasketId = _applicationContext.Baskets.FirstOrDefaultAsync(w => w.UserId == userId).Result.Id,
-                ProductId = productId
-            });
-
-            await _applicationContext.SaveChangesAsync();
-        }
-
-        public async Task DeleteFromBasket(string userId, string[] productId)
-        {
-            foreach (var product in productId)
-            {
-                _applicationContext.BasketProducts.RemoveRange(
-                    _applicationContext.BasketProducts.Where(
-                        w => w.ProductId == product && w.Basket.UserId == userId));
-            }
-
-            await _applicationContext.SaveChangesAsync();
         }
     }
 }

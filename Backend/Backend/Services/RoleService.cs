@@ -16,7 +16,7 @@ namespace Backend.Services
 
         public async Task Create(string roleName)
         {
-            var role = new Role
+            var role = new RoleDatabaseModel
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = roleName

@@ -2,17 +2,17 @@
 
 namespace Backend.Models.Database
 {
-    public sealed class Role
+    public sealed class RoleDatabaseModel
     {
         public string Id { get; set; }
 
         public string Name { get; set; }
 
-        public List<User> Users { get; set; }
+        public List<UserDatabaseModel> Users { get; set; }
 
-        public Role()
+        public RoleDatabaseModel()
         {
-            Users = new List<User>();
+            Users = new List<UserDatabaseModel>();
         }
     }
 }

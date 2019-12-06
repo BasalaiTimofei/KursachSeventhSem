@@ -2,18 +2,18 @@
 
 namespace Backend.Models.Database
 {
-    public sealed class Basket
+    public sealed class BasketDatabaseModel
     {
         public string Id { get; set; }
 
         public string UserId { get; set; }
-        public User User { get; set; }
+        public UserDatabaseModel User { get; set; }
 
-        public List<BasketProduct> Products { get; set; }
+        public List<BasketProductDatabaseModel> Products { get; set; }
 
-        public Basket()
+        public BasketDatabaseModel()
         {
-            Products = new List<BasketProduct>();
+            Products = new List<BasketProductDatabaseModel>();
         }
     }
 }

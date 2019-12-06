@@ -17,7 +17,7 @@ namespace Backend.Services
             _applicationContext = applicationContext;
         }
 
-        public async Task<string[]> Create(Registration model, string role)
+        public async Task<string[]> Registration(RegistrationUserViewModel model, string role)
         {
             if (_applicationContext.Users.Any(w => w.UserName == model.UserName))
             {
@@ -29,7 +29,7 @@ namespace Backend.Services
                 //Вернуть ошибку о том что Уже есть Юзер с таким Email
                 throw new Exception();
             }
-            var user = new User
+            var user = new UserDatabaseModel
             {
                 Id = Guid.NewGuid().ToString(),
                 UserName = model.UserName,
@@ -50,7 +50,7 @@ namespace Backend.Services
             };
             await _applicationContext.Users.AddAsync(user);
 
-            var basket = new Basket
+            var basket = new BasketDatabaseModel
             {
                 Id = Guid.NewGuid().ToString(),
                 UserId = user.Id
@@ -62,7 +62,7 @@ namespace Backend.Services
             return new[] {user.Id, role};
         }
 
-        public async Task<string[]> Login(Login model)
+        public async Task<string[]> Login(LoginUserViewModel model)
         {
             if (_applicationContext.Users.Any(w => w.UserName == model.UserName && w.Password == model.Password))
             {
@@ -76,7 +76,7 @@ namespace Backend.Services
             return new[] {user.Id, user.Role.Name};
         }
 
-        public async Task Delete(DeleteUser model)
+        public async Task Delete(DeleteUserViewModel model)
         {
             if (_applicationContext.Users.Any(w => w.UserName == model.UserName && w.Password == model.Password))
             {

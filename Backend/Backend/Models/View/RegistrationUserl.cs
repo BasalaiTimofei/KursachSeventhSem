@@ -1,6 +1,6 @@
 ﻿namespace Backend.Models.View
 {
-    public class Registration
+    public class RegistrationUserViewModel
     {
         public string UserName { get; set; }
         public string FirstName { get; set; }

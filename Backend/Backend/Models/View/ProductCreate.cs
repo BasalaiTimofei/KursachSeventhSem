@@ -1,6 +1,6 @@
 ﻿namespace Backend.Models.View
 {
-    public class ProductCreate
+    public class ProductCreateViewModel
     {
         public string Name { get; set; }
         public decimal Price { get; set; }
@@ -8,6 +8,6 @@
         public string ProviderId { get; set; }
 
         public string[] UrlImages { get; set; }
-        public ProductInfo ProductInformation { get; set; }
+        public ProductInformationViewModel ProductInformation { get; set; }
     }
 }

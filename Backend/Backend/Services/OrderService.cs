@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Backend.Context;
 using Backend.Models.Database;
+using Backend.Models.View;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Services
 {
@@ -16,7 +21,7 @@ namespace Backend.Services
 
         public async Task Create(string userId, string[] productId)
         {
-            var order = new Order
+            var order = new OrderDatabaseModel
             {
                 Id = Guid.NewGuid().ToString(),
                 UserId = userId,
@@ -26,13 +31,29 @@ namespace Backend.Services
 
             foreach (var item in productId)
             {
-                await _applicationContext.OrderProducts.AddAsync(new OrderProduct
+                await _applicationContext.OrderProducts.AddAsync(new OrderProductDatabaseModel
                 {
                     OrderId = order.Id,
                     ProductId = item
                 });
             }
             await _applicationContext.SaveChangesAsync();
+        }
+
+        public async Task<List<OrderViewModel>> GetAll()
+        {
+            var orderDb = _applicationContext.Orders;
+            var orderView = await orderDb.Select(order => new OrderViewModel
+                {
+                    Id = order.Id,
+                    ProductId = order.Products.Select(w => w.ProductId).ToArray(),
+                    UserId = order.UserId,
+                    DateCreate = order.DateTimeCreate.ToShortDateString(),
+                    FullPrice = Math.Round(order.Products.Sum(w => w.Product.Price), 1).ToString(CultureInfo.InvariantCulture)
+                })
+                .ToListAsync();
+
+            return orderView;
         }
     }
 }

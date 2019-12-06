@@ -1,6 +1,6 @@
 ﻿namespace Backend.Models.View
 {
-    public class ProductInfo
+    public class ProductInformationViewModel
     {
         public string OperatingSystem { get; set; }
         public string ScreenSize { get; set; }

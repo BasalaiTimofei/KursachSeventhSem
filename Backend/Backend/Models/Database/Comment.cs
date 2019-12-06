@@ -2,7 +2,7 @@
 
 namespace Backend.Models.Database
 {
-    public class Comment
+    public class CommentDatabaseModel
     {
         public string Id { get; set; }
 
@@ -10,9 +10,9 @@ namespace Backend.Models.Database
         public DateTime DateTimeCreate { get; set; }
 
         public string UserId { get; set; }
-        public  User User { get; set; }
+        public UserDatabaseModel User { get; set; }
 
         public string ProductId { get; set; }
-        public  Product Product { get; set; }
+        public ProductDatabaseModel Product { get; set; }
     }
 }

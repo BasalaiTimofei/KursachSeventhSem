@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Backend.Models.Database
 {
-    public sealed class Product
+    public sealed class ProductDatabaseModel
     {
         public string Id { get; set; }
 
@@ -22,23 +22,23 @@ namespace Backend.Models.Database
         /// Сылки на картинки
         /// </summary>
         public string[] UrlImages { get; set; }
-        public ProductInformation ProductInformation { get; set; }
+        public ProductInformationDatabaseModel ProductInformation { get; set; }
 
         public string ProviderId { get; set; }
-        public Provider Provider { get; set; }
+        public ProviderDatabaseModel Provider { get; set; }
 
-        public List<Assessment> Assessment { get; set; }
-        public List<BasketProduct> Baskets { get; set; }
-        public List<OrderProduct> Orders { get; set; }
-        public List<Comment> Comments { get; set; }
+        public List<AssessmentDatabaseModel> Assessment { get; set; }
+        public List<BasketProductDatabaseModel> Baskets { get; set; }
+        public List<OrderProductDatabaseModel> Orders { get; set; }
+        public List<CommentDatabaseModel> Comments { get; set; }
 
 
-        public Product()
+        public ProductDatabaseModel()
         {
-            Assessment = new List<Assessment>();
-            Baskets = new List<BasketProduct>();
-            Orders = new List<OrderProduct>();
-            Comments = new List<Comment>();
+            Assessment = new List<AssessmentDatabaseModel>();
+            Baskets = new List<BasketProductDatabaseModel>();
+            Orders = new List<OrderProductDatabaseModel>();
+            Comments = new List<CommentDatabaseModel>();
         }
     }
 }

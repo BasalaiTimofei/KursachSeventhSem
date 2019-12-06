@@ -2,17 +2,17 @@
 
 namespace Backend.Models.Database
 {
-    public class Provider
+    public class ProviderDatabaseModel
     {
         public string Id { get; set; }
 
         public string Name { get; set; }
 
-        public List<Product> Products { get; set; }
+        public List<ProductDatabaseModel> Products { get; set; }
 
-        public Provider()
+        public ProviderDatabaseModel()
         {
-            Products = new List<Product>();
+            Products = new List<ProductDatabaseModel>();
         }
     }
 }
