@@ -24,7 +24,7 @@ namespace Backend.Services
 
         public async Task Add(string userId, string[] productId)
         {
-            var products = productId.Select(product => new BasketProductDatabaseModel
+            var products = productId.Select(product => new BasketProduct
             {
                 BasketId = _applicationContext.Baskets.FirstOrDefaultAsync(w => w.UserId == userId).Result.Id,
                 ProductId = product
@@ -61,7 +61,7 @@ namespace Backend.Services
                     Price = Math.Round(product.Product.Price, 1).ToString(CultureInfo.InvariantCulture),
                     OderCount = product.Product.Orders.Count,
                     ProviderName = product.Product.Provider.Name,
-                    UrlImage = product.Product.UrlImages.FirstOrDefault()
+                    UrlImage = product.Product.UrlImage
                 });
             }
 

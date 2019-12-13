@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Backend.Interfaces;
 
 namespace Backend.Models.Database
 {
-    public sealed class UserDatabaseModel
+    public sealed class User : IEntity
     {
         public string Id { get; set; }
         public string UserName { get; set; }
@@ -37,19 +38,19 @@ namespace Backend.Models.Database
         public DateTime DateTimeCreate { get; set; }
 
         public string RoleId { get; set; }
-        public RoleDatabaseModel Role { get; set; }
+        public Role Role { get; set; }
 
-        public BasketDatabaseModel Basket { get; set; }
+        public Basket Basket { get; set; }
 
-        public List<AssessmentDatabaseModel> Assessment { get; set; }
-        public List<OrderDatabaseModel> Orders { get; set; }
-        public List<CommentDatabaseModel> Comments { get; set; }
+        public List<Assessment> Assessments { get; set; }
+        public List<Order> Orders { get; set; }
+        public List<Comment> Comments { get; set; }
 
-        public UserDatabaseModel()
+        public User()
         {
-            Assessment = new List<AssessmentDatabaseModel>();
-            Orders = new List<OrderDatabaseModel>();
-            Comments = new List<CommentDatabaseModel>();
+            Assessments = new List<Assessment>();
+            Orders = new List<Order>();
+            Comments = new List<Comment>();
         }
     }
 }

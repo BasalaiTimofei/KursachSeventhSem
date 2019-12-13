@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
+using Backend.Interfaces;
 
 namespace Backend.Models.Database
 {
-    public sealed class BasketDatabaseModel
+    public sealed class Basket : IEntity
     {
         public string Id { get; set; }
 
         public string UserId { get; set; }
-        public UserDatabaseModel User { get; set; }
+        public User User { get; set; }
 
-        public List<BasketProductDatabaseModel> Products { get; set; }
+        public List<BasketProduct> Products { get; set; }
 
-        public BasketDatabaseModel()
+        public Basket()
         {
-            Products = new List<BasketProductDatabaseModel>();
+            Products = new List<BasketProduct>();
         }
     }
 }

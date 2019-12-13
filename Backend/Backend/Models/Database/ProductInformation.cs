@@ -1,6 +1,8 @@
-﻿namespace Backend.Models.Database
+﻿using Backend.Interfaces;
+
+namespace Backend.Models.Database
 {
-    public class ProductInformationDatabaseModel
+    public class ProductInformation : IEntity
     {
         public string Id { get; set; }
 
@@ -14,6 +16,6 @@
         public int NumberOfCores { get; set; }
 
         public string ProductId { get; set; }
-        public ProductDatabaseModel Product { get; set; }
+        public Product Product { get; set; }
     }
 }

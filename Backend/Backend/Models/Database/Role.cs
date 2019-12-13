@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
+using Backend.Interfaces;
 
 namespace Backend.Models.Database
 {
-    public sealed class RoleDatabaseModel
+    public sealed class Role : IEntity
     {
         public string Id { get; set; }
 
         public string Name { get; set; }
 
-        public List<UserDatabaseModel> Users { get; set; }
+        public List<User> Users { get; set; }
 
-        public RoleDatabaseModel()
+        public Role()
         {
-            Users = new List<UserDatabaseModel>();
+            Users = new List<User>();
         }
     }
 }

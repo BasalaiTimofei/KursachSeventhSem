@@ -18,7 +18,7 @@ namespace Backend.Services
 
         public async Task Create(string userId, string productId, byte value)
         {
-            await _applicationContext.Assessments.AddAsync(new AssessmentDatabaseModel
+            await _applicationContext.Assessments.AddAsync(new Assessment
             {
                 Id = Guid.NewGuid().ToString(),
                 UserId = userId,
@@ -39,8 +39,7 @@ namespace Backend.Services
 
         public async Task<string> AverageValue(string productId)
         {
-            var value = await _applicationContext.Assessments.Where(w => w.ProductId == productId).AverageAsync(s => s.Value);
-            return Math.Round(value, 1).ToString(CultureInfo.InvariantCulture);
+            return Math.Round(_applicationContext.Assessments.Where(w => w.ProductId == productId).Average(s => s.Value), 1).ToString(CultureInfo.InvariantCulture);
         }
     }
 }

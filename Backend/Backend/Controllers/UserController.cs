@@ -31,9 +31,9 @@ namespace Backend.Controllers
 
                 return Ok();
             }
-            catch (Exception e) //TODO Свой Exception
+            catch (Exception)
             {
-                return BadRequest(e.Message);
+                return BadRequest("Error");
             }
         }
 
@@ -49,9 +49,9 @@ namespace Backend.Controllers
 
                 return Ok();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return BadRequest(e.Message);
+                return BadRequest("Error");
             }
         }
 
@@ -68,14 +68,12 @@ namespace Backend.Controllers
 
                     return Ok();
                 }
-                else
-                {
-                    return BadRequest();
-                }
+
+                return BadRequest();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return BadRequest(e.Message);
+                return BadRequest("Error");
             }
         }
     }

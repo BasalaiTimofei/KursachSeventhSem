@@ -4,26 +4,26 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Backend.Context
 {
-    public class AssessmentConfiguration : IEntityTypeConfiguration<AssessmentDatabaseModel>
+    public class AssessmentConfiguration : IEntityTypeConfiguration<Assessment>
     {
-        public void Configure(EntityTypeBuilder<AssessmentDatabaseModel> builder)
+        public void Configure(EntityTypeBuilder<Assessment> builder)
         {
-            builder.HasKey(k => k.Id);
+            builder.HasKey(w => w.Id);
 
             builder.HasOne(w => w.User)
-                .WithMany(w => w.Assessment)
+                .WithMany(w => w.Assessments)
                 .HasForeignKey(w => w.UserId);
             builder.HasOne(w => w.Product)
-                .WithMany(w => w.Assessment)
+                .WithMany(w => w.Assessments)
                 .HasForeignKey(w => w.ProductId);
 
             builder.Property(w => w.Value).IsRequired();
         }
     }
 
-    public class BasketConfiguration : IEntityTypeConfiguration<BasketDatabaseModel>
+    public class BasketConfiguration : IEntityTypeConfiguration<Basket>
     {
-        public void Configure(EntityTypeBuilder<BasketDatabaseModel> builder)
+        public void Configure(EntityTypeBuilder<Basket> builder)
         {
             builder.HasKey(w => w.Id);
 
@@ -34,9 +34,9 @@ namespace Backend.Context
         }
     }
 
-    public class BasketProductConfiguration : IEntityTypeConfiguration<BasketProductDatabaseModel>
+    public class BasketProductConfiguration : IEntityTypeConfiguration<BasketProduct>
     {
-        public void Configure(EntityTypeBuilder<BasketProductDatabaseModel> builder)
+        public void Configure(EntityTypeBuilder<BasketProduct> builder)
         {
             builder.HasKey(w => new {w.BasketId, w.ProductId});
 
@@ -45,13 +45,13 @@ namespace Backend.Context
                 .HasForeignKey(w => w.BasketId);
             builder.HasOne(w => w.Product)
                 .WithMany(w => w.Baskets)
-                .HasForeignKey(w => w.Product);
+                .HasForeignKey(w => w.ProductId);
         }
     }
 
-    public class CommentConfiguration : IEntityTypeConfiguration<CommentDatabaseModel>
+    public class CommentConfiguration : IEntityTypeConfiguration<Comment>
     {
-        public void Configure(EntityTypeBuilder<CommentDatabaseModel> builder)
+        public void Configure(EntityTypeBuilder<Comment> builder)
         {
             builder.HasKey(w => w.Id);
 
@@ -67,9 +67,9 @@ namespace Backend.Context
         }
     }
 
-    public class OrderConfiguration : IEntityTypeConfiguration<OrderDatabaseModel>
+    public class OrderConfiguration : IEntityTypeConfiguration<Order>
     {
-        public void Configure(EntityTypeBuilder<OrderDatabaseModel> builder)
+        public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.HasKey(w => w.Id);
 
@@ -83,9 +83,9 @@ namespace Backend.Context
         }
     }
 
-    public class OrderProductConfiguration : IEntityTypeConfiguration<OrderProductDatabaseModel>
+    public class OrderProductConfiguration : IEntityTypeConfiguration<OrderProduct>
     {
-        public void Configure(EntityTypeBuilder<OrderProductDatabaseModel> builder)
+        public void Configure(EntityTypeBuilder<OrderProduct> builder)
         {
             builder.HasKey(w => new {w.OrderId, w.ProductId});
 
@@ -98,19 +98,19 @@ namespace Backend.Context
         }
     }
 
-    public class ProductConfiguration : IEntityTypeConfiguration<ProductDatabaseModel>
+    public class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
-        public void Configure(EntityTypeBuilder<ProductDatabaseModel> builder)
+        public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.HasKey(w => w.Id);
 
             builder.HasOne(w => w.ProductInformation)
                 .WithOne(w => w.Product)
-                .HasForeignKey<ProductInformationDatabaseModel>(w => w.ProductId);
+                .HasForeignKey<ProductInformation>(w => w.ProductId);
             builder.HasOne(w => w.Provider)
                 .WithMany(w => w.Products)
                 .HasForeignKey(w => w.ProviderId);
-            builder.HasMany(w => w.Assessment)
+            builder.HasMany(w => w.Assessments)
                 .WithOne(w => w.Product);
             builder.HasMany(w => w.Baskets)
                 .WithOne(w => w.Product);
@@ -123,12 +123,13 @@ namespace Backend.Context
             builder.Property(w => w.Price).IsRequired();
             builder.Property(w => w.Description).IsRequired().HasMaxLength(1000);
             builder.Property(w => w.DateTimeCreate).IsRequired();
+            builder.Property(p => p.UrlImage).IsRequired();
         }
     }
 
-    public class ProductInformationConfiguration : IEntityTypeConfiguration<ProductInformationDatabaseModel>
+    public class ProductInformationConfiguration : IEntityTypeConfiguration<ProductInformation>
     {
-        public void Configure(EntityTypeBuilder<ProductInformationDatabaseModel> builder)
+        public void Configure(EntityTypeBuilder<ProductInformation> builder)
         {
             builder.HasKey(w => w.Id);
 
@@ -143,9 +144,9 @@ namespace Backend.Context
         }
     }
 
-    public class ProviderConfiguration : IEntityTypeConfiguration<ProviderDatabaseModel>
+    public class ProviderConfiguration : IEntityTypeConfiguration<Provider>
     {
-        public void Configure(EntityTypeBuilder<ProviderDatabaseModel> builder)
+        public void Configure(EntityTypeBuilder<Provider> builder)
         {
             builder.HasKey(w => w.Id);
 
@@ -156,9 +157,9 @@ namespace Backend.Context
         }
     }
 
-    public class RoleConfiguration : IEntityTypeConfiguration<RoleDatabaseModel>
+    public class RoleConfiguration : IEntityTypeConfiguration<Role>
     {
-        public void Configure(EntityTypeBuilder<RoleDatabaseModel> builder)
+        public void Configure(EntityTypeBuilder<Role> builder)
         {
             builder.HasKey(w => w.Id);
 
@@ -169,19 +170,19 @@ namespace Backend.Context
         }
     }
 
-    public class UserConfiguration : IEntityTypeConfiguration<UserDatabaseModel>
+    public class UserConfiguration : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<UserDatabaseModel> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasKey(w => w.Id);
 
             builder.HasOne(w => w.Basket)
                 .WithOne(w => w.User)
-                .HasForeignKey<BasketDatabaseModel>(w => w.UserId);
+                .HasForeignKey<Basket>(w => w.UserId);
             builder.HasOne(w => w.Role)
                 .WithMany(w => w.Users)
                 .HasForeignKey(w => w.RoleId);
-            builder.HasMany(w => w.Assessment)
+            builder.HasMany(w => w.Assessments)
                 .WithOne(w => w.User);
             builder.HasMany(w => w.Orders)
                 .WithOne(w => w.User);

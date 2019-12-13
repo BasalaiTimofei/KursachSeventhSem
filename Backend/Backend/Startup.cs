@@ -1,10 +1,12 @@
 ﻿using Backend.Context;
+using Backend.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace Backend
 {
@@ -19,9 +21,23 @@ namespace Backend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationContext>(options => 
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("ShopDatabase")));
 
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(w =>
+            {
+                w.SerializerSettings.Formatting = Formatting.Indented;
+            });
+
+            services.AddScoped<AssessmentService>();
+            services.AddScoped<BasketService>();
+            services.AddScoped<CommentService>();
+            services.AddScoped<OrderService>();
+            services.AddScoped<ProductService>();
+            services.AddScoped<ProviderService>();
+            services.AddScoped<RoleService>();
+            services.AddScoped<UserService>();
+
+            services.AddScoped<Creating>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

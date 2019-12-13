@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Backend.Interfaces;
 
 namespace Backend.Models.Database
 {
-    public sealed class ProductDatabaseModel
+    public sealed class Product : IEntity
     {
         public string Id { get; set; }
 
@@ -21,24 +22,24 @@ namespace Backend.Models.Database
         /// <summary>
         /// Сылки на картинки
         /// </summary>
-        public string[] UrlImages { get; set; }
-        public ProductInformationDatabaseModel ProductInformation { get; set; }
+        public string UrlImage { get; set; }
+        public ProductInformation ProductInformation { get; set; }
 
         public string ProviderId { get; set; }
-        public ProviderDatabaseModel Provider { get; set; }
+        public Provider Provider { get; set; }
 
-        public List<AssessmentDatabaseModel> Assessment { get; set; }
-        public List<BasketProductDatabaseModel> Baskets { get; set; }
-        public List<OrderProductDatabaseModel> Orders { get; set; }
-        public List<CommentDatabaseModel> Comments { get; set; }
+        public List<Assessment> Assessments { get; set; }
+        public List<BasketProduct> Baskets { get; set; }
+        public List<OrderProduct> Orders { get; set; }
+        public List<Comment> Comments { get; set; }
 
 
-        public ProductDatabaseModel()
+        public Product()
         {
-            Assessment = new List<AssessmentDatabaseModel>();
-            Baskets = new List<BasketProductDatabaseModel>();
-            Orders = new List<OrderProductDatabaseModel>();
-            Comments = new List<CommentDatabaseModel>();
+            Assessments = new List<Assessment>();
+            Baskets = new List<BasketProduct>();
+            Orders = new List<OrderProduct>();
+            Comments = new List<Comment>();
         }
     }
 }

@@ -21,17 +21,18 @@ namespace Backend.Services
 
         public async Task Create(string userId, string[] productId)
         {
-            var order = new OrderDatabaseModel
+            var order = new Order
             {
                 Id = Guid.NewGuid().ToString(),
                 UserId = userId,
                 DateTimeCreate = DateTime.Now,
             };
-            await _applicationContext.SaveChangesAsync();
+            await _applicationContext.Orders.AddAsync(order);
+            //await _applicationContext.SaveChangesAsync();
 
             foreach (var item in productId)
             {
-                await _applicationContext.OrderProducts.AddAsync(new OrderProductDatabaseModel
+                await _applicationContext.OrderProducts.AddAsync(new OrderProduct
                 {
                     OrderId = order.Id,
                     ProductId = item

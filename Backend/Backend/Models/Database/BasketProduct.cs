@@ -1,11 +1,15 @@
-﻿namespace Backend.Models.Database
+﻿using Backend.Interfaces;
+
+namespace Backend.Models.Database
 {
-    public class BasketProductDatabaseModel
+    public class BasketProduct //: IEntity
     {
+        //public string Id { get; set; }
+
         public string BasketId { get; set; }
-        public BasketDatabaseModel Basket { get; set; }
+        public Basket Basket { get; set; }
 
         public string ProductId { get; set; }
-        public ProductDatabaseModel Product { get; set; }
+        public Product Product { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace Backend.Services
 
         public async Task Create(string userId, string productId, string text)
         {
-            var comment = new CommentDatabaseModel
+            var comment = new Comment
             {
                 Id = Guid.NewGuid().ToString(),
                 DateTimeCreate = DateTime.Now,
@@ -29,14 +29,16 @@ namespace Backend.Services
                 UserId = userId
             };
             await _applicationContext.Comments.AddAsync(comment);
-
             await _applicationContext.SaveChangesAsync();
+
         }
 
         public async Task Update(string commentId, string text)
         {
             _applicationContext.Comments.FindAsync(commentId).Result.Text = text;
             await _applicationContext.SaveChangesAsync();
+
+            _applicationContext.Dispose();
         }
 
         public async Task Delete(string commentId)

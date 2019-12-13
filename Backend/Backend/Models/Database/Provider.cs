@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
+using Backend.Interfaces;
 
 namespace Backend.Models.Database
 {
-    public class ProviderDatabaseModel
+    public class Provider : IEntity
     {
         public string Id { get; set; }
 
         public string Name { get; set; }
 
-        public List<ProductDatabaseModel> Products { get; set; }
+        public List<Product> Products { get; set; }
 
-        public ProviderDatabaseModel()
+        public Provider()
         {
-            Products = new List<ProductDatabaseModel>();
+            Products = new List<Product>();
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System;
+using Backend.Interfaces;
 
 namespace Backend.Models.Database
 {
-    public class CommentDatabaseModel
+    public class Comment : IEntity
     {
         public string Id { get; set; }
 
@@ -10,9 +11,9 @@ namespace Backend.Models.Database
         public DateTime DateTimeCreate { get; set; }
 
         public string UserId { get; set; }
-        public UserDatabaseModel User { get; set; }
+        public User User { get; set; }
 
         public string ProductId { get; set; }
-        public ProductDatabaseModel Product { get; set; }
+        public Product Product { get; set; }
     }
 }
